@@ -128,15 +128,19 @@ def readSerial():
     sampling = 50
     sample = 0
     while serialData:
-        data = ser.readline()
+        data = ser.read(4)
+
         if len(data) > 0:
             try:
+                print(data)
                 sensor = int(data.decode('utf8'))
                 data_sensor = int(data.decode('utf8'))
                 average += data_sensor
-                sample += 1
+                print(f'The Sensor is {sensor}')
+                print(f'The Sensor Data is {data_sensor}')
+                sample +=0
                 if sample == sampling:
-                    sensor = int(average/sampling)
+                    sensor = int(average)
                     average = 0
                     sample = 0
                 # print(sensor)
@@ -167,7 +171,7 @@ def connexion():
         port = clicked_com.get()
         baud = clicked_bd.get()
         try:
-            ser = serial.Serial(port, baud, timeout=0)
+            ser = serial.Serial(port, baud, timeout=10)
         except:
             pass
         t1 = threading.Thread(target=readSerial)
